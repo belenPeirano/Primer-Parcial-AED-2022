@@ -51,7 +51,7 @@ public class TElementoAB<T> implements IElementoAB<T> {
     @Override
     public boolean buscar(Comparable unaEtiqueta) {
         contadorBusquedas++;
-        
+
         if (unaEtiqueta == etiqueta) {
             return true;
         } else if (unaEtiqueta.compareTo(etiqueta) < 0) {
@@ -69,10 +69,10 @@ public class TElementoAB<T> implements IElementoAB<T> {
     @Override
     public boolean insertar(TElementoAB<T> elemento) {
         contador++;
-        
+
         if (etiqueta.equals(elemento.getEtiqueta())) {
             return false;
-        } 
+        }
         if (elemento.getEtiqueta().compareTo(etiqueta) < 0) {
             if (hijoIzq == null) {
                 hijoIzq = elemento;
@@ -135,7 +135,7 @@ public class TElementoAB<T> implements IElementoAB<T> {
             tempStr += hijoDer.inOrden();
         }
     }
-    
+
     @Override
     public String postOrden() {
         String tempStr = "";
@@ -153,11 +153,11 @@ public class TElementoAB<T> implements IElementoAB<T> {
     public T getDatos() {
         return datos;
     }
-    
+
     public String imprimir() {
         return (etiqueta.toString());
     }
-    
+
     public int obtenerAltura() {
         int AltHijoIzq = -1;
         int AltHijoDer = -1;
@@ -168,25 +168,112 @@ public class TElementoAB<T> implements IElementoAB<T> {
         if (hijoDer != null) {
             AltHijoDer = hijoDer.obtenerAltura();
         }
-        return Math.max(AltHijoIzq,AltHijoDer) + 1;
+        return Math.max(AltHijoIzq, AltHijoDer) + 1;
     }
 
     public int obtenerTamanio() {
         String[] preOrden = preOrden().split(" ");
-        
+
         return preOrden.length;
     }
 
     public int obtenerNivel(Comparable unaEtiqueta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (unaEtiqueta == etiqueta) {
+            return 1;
+        }
+        if (unaEtiqueta.compareTo(etiqueta) < 0) {
+            if (hijoIzq != null) {
+                int nivel = hijoIzq.obtenerNivel(unaEtiqueta);
+                if (nivel > 0) {
+                    nivel++;
+                }
+                return nivel - 1;
+            }
+        }
+        if (unaEtiqueta.compareTo(etiqueta) > 0) {
+            if (hijoDer != null) {
+                int nivel = hijoDer.obtenerNivel(unaEtiqueta);
+                if (nivel > 0) {
+                    nivel++;
+                }
+                return nivel - 1;
+            }
+        }
+        System.out.println("Esa etiqueta no se encuentra en el árbol.");
+        return -1;
     }
 
+   /* public int obtenerNivel(Comparable unaEtiqueta, int nivel) {
+        if (unaEtiqueta == etiqueta) {
+            return nivel;
+        }
+        if (unaEtiqueta.compareTo(etiqueta) < 0) {
+            if (hijoIzq != null) {
+                nivel++;
+                return hijoIzq.obtenerNivel(unaEtiqueta, nivel);
+            }
+        }
+        if (unaEtiqueta.compareTo(etiqueta) > 0) {
+            if (hijoDer != null) {
+                nivel++;
+                return hijoDer.obtenerNivel(unaEtiqueta, nivel);
+            }
+        }
+        System.out.println("Esa etiqueta no se encuentra en el árbol.");
+        return 0;
+    }*/
+
     public int obtenerCantidadHojas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contador = 0;
+
+        if (this.getHijoIzq() == null && this.getHijoDer() == null) {
+            return 1;
+        }
+        if (this.getHijoIzq() != null) {
+            contador += this.getHijoIzq().obtenerCantidadHojas();
+        }
+        if (this.getHijoDer() != null) {
+            contador += this.getHijoDer().obtenerCantidadHojas();
+        }
+        return contador;
     }
-    
+
     @Override
     public TElementoAB eliminar(Comparable unaEtiqueta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (unaEtiqueta.compareTo(this.getEtiqueta()) < 0) {
+            if (this.getHijoIzq() != null) {
+                this.setHijoIzq(this.getHijoIzq().eliminar(unaEtiqueta));
+            }
+            return this;
+        }
+        if (unaEtiqueta.compareTo(this.getEtiqueta()) > 0) {
+            if (this.getHijoDer() != null) {
+                this.setHijoDer(this.getHijoDer().eliminar(unaEtiqueta));
+            }
+            return this;
+        }
+        return this.quitaElNodo(unaEtiqueta);
+    }
+
+    public TElementoAB quitaElNodo(Comparable UnaEtiqueta) {
+        if (this.getHijoIzq() == null) {
+            return this.getHijoDer();
+        }
+        if (this.getHijoDer() == null) {
+            return this.getHijoIzq();
+        }
+        TElementoAB elHijo = this.getHijoIzq();
+        TElementoAB elPadre = this;
+
+        while (elHijo.getHijoDer() != null) {
+            elPadre = elHijo;
+            elHijo = elHijo.getHijoDer();
+        }
+        if (elPadre != this) {
+            elPadre.setHijoDer(elHijo.getHijoIzq());
+            elHijo.setHijoIzq(this.getHijoIzq());
+        }
+        elHijo.setHijoDer(this.getHijoDer());
+        return elHijo;
     }
 }

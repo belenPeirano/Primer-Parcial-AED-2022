@@ -102,26 +102,25 @@ public class TArbolBB<T> implements IArbolBB<T> {
         return raiz.obtenerTamanio();
     }
 
-    public int menorClave() {
+    public int obtenerNivel(Comparable unaEtiqueta) {
         if (raiz == null) {
             return 0;
-        } else {
-            Lista<T> listaInOrden = inorden();
-            return (int)listaInOrden.getPrimero().getEtiqueta();
         }
-    }
-
-    public int obtenerNivel(Comparable unaEtiqueta) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return raiz.obtenerNivel(unaEtiqueta);
     }
 
     public int obtenerCantidadHojas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (raiz == null) {
+            return 0;
+        }
+        return raiz.obtenerCantidadHojas();
     }
     
     @Override
     public void eliminar(Comparable unaEtiqueta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (raiz != null) {
+            raiz = raiz.eliminar(unaEtiqueta);
+        }
     }
 
 }
