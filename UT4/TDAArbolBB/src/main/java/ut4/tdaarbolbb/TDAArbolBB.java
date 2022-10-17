@@ -15,8 +15,19 @@ public class TDAArbolBB {
         TArbolBB<TElementoAB> arbol = new TArbolBB<TElementoAB>();
 
         String[] claves1 = ManejadorArchivosGenerico.leerArchivo(".\\src\\main\\java\\ut4\\tdaarbolbb\\claves1.txt");
+        TElementoAB elemento = null;
+        
+        for (int i = 0; i < claves1.length; i++) {
+            //leer archivo
+            elemento = new TElementoAB(Integer.parseInt(claves1[i]), i);
+            arbol.insertar(elemento);
 
-        TElementoAB elemento1 = new TElementoAB(5, "5");
+            if (elemento == null) {
+                claves1[i] = "0";
+            }
+        }
+
+        /*TElementoAB elemento1 = new TElementoAB(5, "5");
         TElementoAB elemento2 = new TElementoAB(6, "6");
         TElementoAB elemento3 = new TElementoAB(2, "2");
         TElementoAB elemento4 = new TElementoAB(3, "3");
@@ -26,16 +37,8 @@ public class TDAArbolBB {
         arbol.insertar(elemento2);
         arbol.insertar(elemento3);
         arbol.insertar(elemento4);
-        arbol.insertar(elemento5);
-        /*for (int i = 0; i < claves1.length; i++) {
-            //leer archivo
-            elemento = new TElementoAB(Integer.parseInt(claves1[i]), i);
-            arbol.insertar(elemento);
-
-            if (elemento == null) {
-                claves1[i] = "0";
-            }
-        }*/
+        arbol.insertar(elemento5);*/
+        
         
         //Ejecución 2
         /*
@@ -48,7 +51,7 @@ public class TDAArbolBB {
         
         //arbol.eliminar(5354);
         //System.out.println("Cantidad de hojas: " + arbol.obtenerCantidadHojas());
-        System.out.println("Nivel: " + arbol.obtenerNivel(5));
+        //System.out.println("Nivel: " + arbol.obtenerNivel(5));
         System.out.println(arbol.preOrden());
     }
     
